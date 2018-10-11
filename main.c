@@ -87,17 +87,42 @@ int main() {
             11, 22, 71, 3, 63
     };
 
-
     unsigned int size = 5;
     int **matrix;
-
     matrix = allocateMemoryForMatrix(size);
+    char choice;
+    printf("Do you want to tap matrix yourself? y/n");
+    scanf("%c", &choice);
+    switch (choice){
+        case 'y':{
+            for (int row = 0; row < size; ++row) {
+                for (int col = 0; col < size; ++col) {
+                   printf("Tap element of %dth row and %dth col: ", row, col);
+                    scanf("%d", &matrix[row][col]);
 
-    for (int row = 0; row < SAMPLE_MATRIX_SIZE; ++row) {
-        for (int col = 0; col < SAMPLE_MATRIX_SIZE; ++col) {
-            matrix[row][col] = sampleMatrix[row][col];
+                }
+            }
+            break;
+        }
+        case 'n':{
+            for (int row = 0; row < SAMPLE_MATRIX_SIZE; ++row) {
+                for (int col = 0; col < SAMPLE_MATRIX_SIZE; ++col) {
+                    matrix[row][col] = sampleMatrix[row][col];
+        }
+            }
+        }
+
+        default: {
+
+            for (int row = 0; row < SAMPLE_MATRIX_SIZE; ++row) {
+                for (int col = 0; col < SAMPLE_MATRIX_SIZE; ++col) {
+                    matrix[row][col] = sampleMatrix[row][col];
+                }
+            }
         }
     }
+
+
 
     printf("Initial matrix");
     printMatrix(matrix, size);
