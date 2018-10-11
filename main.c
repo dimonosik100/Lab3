@@ -1,115 +1,121 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
-#define n 5
+#define SAMPLE_MATRIX_SIZE 5
 
-void overDiagonal(int arr[][n]) {
-    int sum0[n] = {M_E};
-    int multi = 1;
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = i + 1; j < n; j++) {
+int **allocateMemoryForMatrix(unsigned int size) {
+    int **matrix = (int **) malloc(size * sizeof(int *));
 
-            sum0[j] += arr[i][j];
-
-
-        }
+    for (int row = 0; row < size; ++row) {
+        matrix[row] = (int *) malloc(size * sizeof(int));
     }
 
-    for (int i = 1; i < n; i++) {
-        if (sum0[i] != M_E) {
-            printf("\n Sum of %dth column =  %d", i, sum0[i]);
-            multi = multi * sum0[i];
+    return matrix;
+}
 
-        }
+void freeMemoryOfMatrix(int **matrix, unsigned int size) {
+    for (int row = 0; row < size; ++row) {
+        free(matrix[row]);
     }
-    printf("\n Multi =  %d", multi);
+    free(matrix);
 }
 
 
-void funcOut(int arr[][n]) {
-    for (int x = 0; x < n; ++x) {
-        printf("\n ");
-        for (int y = 0; y < n; ++y) {
-            printf("%d ", arr[x][y]);
+int sumOverDiagonal(int **matrix, int matrixSize, int columnId) {
+    int sum = 0;
+
+    for (int rowId = 0; rowId < matrixSize; ++rowId) {
+        if (rowId == columnId) {
+            break;
+        } else {
+            sum += matrix[rowId][columnId];
         }
     }
 
+    return sum;
+}
+
+int productOfSumOverDiagonal(int **matrix, int matrixSize) {
+    int prod = 1;
+
+    for (int colId = 1; colId < matrixSize; ++colId) {
+        prod *= sumOverDiagonal(matrix, matrixSize, colId);
+    }
+
+    return prod;
 
 }
 
-void sort(int arr[][n], int rows, int cols) {
+void printMatrix(int **matrix, int matrixSize) {
+    printf("\n\n");
 
-    for (int k = 0; k < cols; k++) {
+    for (int row = 0; row < matrixSize; ++row) {
+        printf("\n");
+        for (int col = 0; col < matrixSize; ++col) {
+            printf("%d ", matrix[row][col]);
+        }
+    }
 
+    printf("\n\n");
+}
 
-        for (int i = 0; i < rows - 1; i++) {
-            for (int j = 0; j < rows - i - 1; j++) {
-
-
-                if (arr[k][j] < arr[k][j + 1]) {
-                    int tmp = arr[k][j];
-                    arr[k][j] = arr[k][j + 1];
-                    arr[k][j + 1] = tmp;
-                }
+void sortArray(int *arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = i; j < size; ++j) {
+            if (arr[j] > arr[i]) {
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
         }
+    }
+}
+
+void sortMatrixRows(int **matrix, int matrixSize) {
+    for (int row = 0; row < matrixSize; ++row) {
+        sortArray(matrix[row], matrixSize);
     }
 }
 
 int main() {
-    int size = 5;
-    char choice;
-    int sum = 0;
-    int rows = n, cols = n;
-    int arr[n][n] = {
+    int sampleMatrix[SAMPLE_MATRIX_SIZE][SAMPLE_MATRIX_SIZE] = {
             9, 67, -65, 45, 1,
             12, 61, 48, -5, -1,
             0, 39, 0, 41, 2,
             36, 95, -8, -5, 0,
-            11, 22, 71, 3, 63};
-    int *p = arr;
-    printf("Do you want to tap matrix yourself? y/n ");
-    scanf(" \n %c", &choice);
-    switch (choice) {
-        case 'y' : {
-            int **arr1;
+            11, 22, 71, 3, 63
+    };
 
-            printf("\n Now define your matrix size: ");
-            scanf("%d", &size);
-            arr1 = (int**)malloc(size* size*sizeof(int));
-            p = arr1;
-            for (int i = 0; i < size; ++i) {
-                for (int j = 0; j < size; ++j) {
-                    printf("\n Tap matrix element of %d row and %d column", i, j);
-                    scanf("%d", &arr1[i][j]);
-                }
-            }
-            printf("There is your matirx:");
-            funcOut( p);
-            sort( p, size, size);
-            printf("There is your sorted matirx:");
-            funcOut(p);
-            overDiagonal(p);
-        }
-        case 'n': {
 
-            sort(p, n, n); //sort actual array
-            funcOut(p);    //print out sorted array
+    unsigned int size = 5;
+    int **matrix;
 
-            overDiagonal(p); //execution of calculating the elements over diagonal
-            break;
-        }
-        default: {
+    matrix = allocateMemoryForMatrix(size);
 
-            sort(p, n, n); //sort actual array
-            funcOut(p);    //print out sorted array
-
-            overDiagonal(p); //execution of calculating the elements over diagonal
-
+    for (int row = 0; row < SAMPLE_MATRIX_SIZE; ++row) {
+        for (int col = 0; col < SAMPLE_MATRIX_SIZE; ++col) {
+            matrix[row][col] = sampleMatrix[row][col];
         }
     }
+
+    printf("Initial matrix");
+    printMatrix(matrix, size);
+
+    sortMatrixRows(matrix, size);
+
+    printf("Sorted matrix");
+    printMatrix(matrix, size);
+
+    for (int colId = 1; colId < size; ++colId) {
+        printf("Sum of colId %d: %d\n", colId, sumOverDiagonal(matrix, size, colId));
+    }
+
+    int prod = productOfSumOverDiagonal(matrix, size);
+    printf("Product = %d", prod);
+    freeMemoryOfMatrix(matrix, size);
+
+    return 0;
 }
-
-
 
 
