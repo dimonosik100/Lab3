@@ -3,12 +3,10 @@
 
 #define n 5
 
-void overDiagonal( int arr[][n]) {
+void overDiagonal(int arr[][n]) {
     int sum0[n] = {M_E};
     int multi = 1;
     for (int i = 0; i < n - 1; ++i) {
-
-
         for (int j = i + 1; j < n; j++) {
 
             sum0[j] += arr[i][j];
@@ -18,7 +16,6 @@ void overDiagonal( int arr[][n]) {
     }
 
     for (int i = 1; i < n; i++) {
-
         if (sum0[i] != M_E) {
             printf("\n Sum of %dth column =  %d", i, sum0[i]);
             multi = multi * sum0[i];
@@ -29,7 +26,7 @@ void overDiagonal( int arr[][n]) {
 }
 
 
-void funcOut( int arr[][n]) {
+void funcOut(int arr[][n]) {
     for (int x = 0; x < n; ++x) {
         printf("\n ");
         for (int y = 0; y < n; ++y) {
@@ -40,7 +37,7 @@ void funcOut( int arr[][n]) {
 
 }
 
-void sort( int arr[][n], int rows, int cols) {
+void sort(int arr[][n], int rows, int cols) {
 
     for (int k = 0; k < cols; k++) {
 
@@ -60,7 +57,7 @@ void sort( int arr[][n], int rows, int cols) {
 }
 
 int main() {
-     int size = 5;
+    int size = 5;
     char choice;
     int sum = 0;
     int rows = n, cols = n;
@@ -75,34 +72,37 @@ int main() {
     scanf(" \n %c", &choice);
     switch (choice) {
         case 'y' : {
-            /*printf("\n Now define your matrix n: ");
+            int **arr1;
+
+            printf("\n Now define your matrix size: ");
             scanf("%d", &size);
-            int arr[size][size] = {0};
+            arr1 = (int**)malloc(size* size*sizeof(int));
+            p = arr1;
             for (int i = 0; i < size; ++i) {
                 for (int j = 0; j < size; ++j) {
                     printf("\n Tap matrix element of %d row and %d column", i, j);
-                    scanf("%d", &arr[i][j]);
+                    scanf("%d", &arr1[i][j]);
                 }
             }
             printf("There is your matirx:");
-            funcOut(size, p);
-            sort(size, p, size, size);
+            funcOut( p);
+            sort( p, size, size);
             printf("There is your sorted matirx:");
-            funcOut(size, p);
-            overDiagonal(size, p);*/
+            funcOut(p);
+            overDiagonal(p);
         }
         case 'n': {
 
-            sort( p, n, n); //sort actual array
-            funcOut( p);    //print out sorted array
+            sort(p, n, n); //sort actual array
+            funcOut(p);    //print out sorted array
 
             overDiagonal(p); //execution of calculating the elements over diagonal
-        break;
+            break;
         }
         default: {
 
             sort(p, n, n); //sort actual array
-            funcOut( p);    //print out sorted array
+            funcOut(p);    //print out sorted array
 
             overDiagonal(p); //execution of calculating the elements over diagonal
 
