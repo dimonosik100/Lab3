@@ -37,13 +37,13 @@ int sumOverDiagonal(int **matrix, int matrixSize, int columnId) {
 }
 
 int productOfSumOverDiagonal(int **matrix, int matrixSize) {
-    int prod = 1;
+    int product = 1;
 
     for (int colId = 1; colId < matrixSize; ++colId) {
-        prod *= sumOverDiagonal(matrix, matrixSize, colId);
+        product *= sumOverDiagonal(matrix, matrixSize, colId);
     }
 
-    return prod;
+    return product;
 
 }
 
@@ -60,7 +60,7 @@ void printMatrix(int **matrix, int matrixSize) {
     printf("\n\n");
 }
 
-void sortArray(int *arr, int size) {
+void bubbleSortArray(int *arr, int size) {
     for (int i = 0; i < size; ++i) {
         for (int j = i; j < size; ++j) {
             if (arr[j] > arr[i]) {
@@ -74,7 +74,7 @@ void sortArray(int *arr, int size) {
 
 void sortMatrixRows(int **matrix, int matrixSize) {
     for (int row = 0; row < matrixSize; ++row) {
-        sortArray(matrix[row], matrixSize);
+        bubbleSortArray(matrix[row], matrixSize);
     }
 }
 
